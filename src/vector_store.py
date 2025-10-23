@@ -1,17 +1,17 @@
 import os
 import uuid
 from typing import List, Tuple
-import pinecone
-from langchain.embeddings import OpenAIEmbeddings
+from pinecone import Pinecone, ServerlessSpec
+from langchain_openai import OpenAIEmbeddings
 
 class VectorStore:
     def __init__(self):
-        """Initialize Pinecone vector store using the v2 SDK."""
+        """Initialize Pinecone vector store using the v3 SDK."""
         api_key = os.getenv("PINECONE_API_KEY")
         if not api_key:
             raise ValueError("PINECONE_API_KEY is not set")
 
-        pinecone.init(api_key=api_key, environment=os.getenv("PINECONE_ENVIRONMENT", "us-east-1-aws"))
+        self.pc = Pinecone(api_key=api_key)
 
         # self.index_name = os.getenv("PINECONE_INDEX_NAME")
         self.index_name = "rag2"
@@ -19,19 +19,25 @@ class VectorStore:
             raise ValueError("PINECONE_INDEX_NAME is not set")
 
         # Explicitly set the OpenAI embeddings model and match dimension
-        # text-embedding-ada-002 has dimension 1536
-        self.embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+        # text-embedding-3-small has dimension 1536
+        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
         self.embedding_dimension = 1536
 
+        # Serverless index config (can be overridden via env)
+        cloud = os.getenv("PINECONE_CLOUD", "aws")
+        region = os.getenv("PINECONE_REGION", "us-east-1")
+
         # Create index if it does not exist
-        if self.index_name not in pinecone.list_indexes():
-            pinecone.create_index(
+        existing = self.pc.list_indexes().names()
+        if self.index_name not in existing:
+            self.pc.create_index(
                 name=self.index_name,
                 dimension=self.embedding_dimension,
-                metric="cosine"
+                metric="cosine",
+                spec=ServerlessSpec(cloud=cloud, region=region),
             )
 
-        self.index = pinecone.Index(self.index_name)
+        self.index = self.pc.Index(self.index_name)
     
     def add_texts(self, texts: List[str], metadata: List[dict] | None = None) -> None:
         """Add texts to the vector store with generated unique IDs."""
@@ -67,12 +73,12 @@ class VectorStore:
             include_metadata=True,
         )
 
-        # Handle Pinecone v2 response format
-        matches = results.get("matches", [])
+        # Support both dict-like and attribute access
+        matches = results.get("matches", []) if isinstance(results, dict) else getattr(results, "matches", [])
         output: List[Tuple[str, float]] = []
         for m in matches:
-            meta = m.get("metadata", {})
-            score = m.get("score", 0.0)
+            meta = m.get("metadata") if isinstance(m, dict) else getattr(m, "metadata", {})
+            score = m.get("score") if isinstance(m, dict) else getattr(m, "score", 0.0)
             if meta and "text" in meta:
                 output.append((meta["text"], float(score)))
         return output
