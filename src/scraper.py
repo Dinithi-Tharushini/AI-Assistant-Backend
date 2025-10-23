@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 BLOCKED_PATTERNS = [
