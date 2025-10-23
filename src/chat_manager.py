@@ -1,7 +1,7 @@
 from typing import TypedDict, List, Annotated, Generator
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import BaseMessage, HumanMessage, AIMessage
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langgraph.checkpoint.memory import InMemorySaver
