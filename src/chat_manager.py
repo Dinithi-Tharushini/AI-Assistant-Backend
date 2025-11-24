@@ -169,6 +169,27 @@ class ChatManager:
         def generator() -> Generator[str, None, None]:
             collected_parts: List[str] = []
             buffer = ""  # Buffer to accumulate subword tokens
+            last_emitted_char = ""  # Track last char sent to client
+
+            def normalize_fragment(fragment: str) -> str:
+                """Ensure natural spacing even if upstream tokens omit spaces."""
+                nonlocal last_emitted_char
+                piece = fragment
+                if piece:
+                    needs_prefix_space = (
+                        not piece[0].isspace()
+                        and last_emitted_char
+                        and not last_emitted_char.isspace()
+                        and last_emitted_char not in '({["\''
+                        and piece[0].isalnum()
+                    )
+                    if needs_prefix_space:
+                        piece = " " + piece
+
+                    stripped = piece.rstrip("\n\r")
+                    if stripped:
+                        last_emitted_char = stripped[-1]
+                return piece
             
             # Build prompt messages explicitly and stream from the model directly
             formatted_msgs = self.prompt.format_messages(
@@ -191,15 +212,15 @@ class ChatManager:
                 if token.startswith((' ', '\n', '\t')):
                     # Flush any buffered subwords first
                     if buffer:
-                        yield buffer
+                        yield normalize_fragment(buffer)
                         buffer = ""
                     # Now yield this token (space + word or just space)
-                    yield token
+                    yield normalize_fragment(token)
                 # Check if token is pure punctuation or ends with space/newline
                 elif token.strip() in '.,!?;:"\'-—…()[]{}' or token.endswith((' ', '\n', '\t')):
                     # Add to buffer and flush (punctuation ends a word)
                     buffer += token
-                    yield buffer
+                    yield normalize_fragment(buffer)
                     buffer = ""
                 else:
                     # This is a subword fragment (like "Ch", "ann", "aka")
@@ -208,7 +229,7 @@ class ChatManager:
             
             # Flush any remaining buffer at the end of stream
             if buffer:
-                yield buffer
+                yield normalize_fragment(buffer)
 
             # Persist the turn (user + final ai) to memory for this thread
             try:
