@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import os
+from itertools import cycle
 from src.document_processor import DocumentProcessor
 from src.chat_manager import ChatManager
 from src.vector_store import VectorStore
@@ -21,6 +22,55 @@ document_processor = DocumentProcessor(vector_store)
 chat_manager = ChatManager(vector_store)
 audio_service = AudioService()
 scraper = WebScraper(vector_store)
+
+PREDEFINED_ANSWERS = [
+    {
+        "question": "Executive benefits overview",
+        "answer": (
+            "Welcome to Advantis! As an Executive employee you receive medical coverage "
+            "including outpatient reimbursement, hospitalization/surgical insurance, "
+            "critical illness cover, mobile ambulance support (Healthscan), and spectacle "
+            "reimbursement. Life & accident cover includes Group Term Life Assurance and "
+            "Personal Accident Insurance. Statutory benefits: Private Provident Fund, "
+            "Employees’ Trust Fund, and Gratuity after 5 years. Loan facilities include "
+            "personal, academic/professional development, motorcycle, and PPF-based housing/"
+            "education loans. Recreational perks include annual company trips, holiday "
+            "bungalows, hotel discounts, and subsidized gym memberships. HGRC membership "
+            "covers funeral fund, wedding/newborn gifts, educational rewards, blood donation "
+            "support, and events. Long service awards recognize tenure milestones. "
+            "Professional development: examination gifts, support for relevant memberships, "
+            "and career assistance. Other perks include company wedding gifts, club "
+            "membership eligibility, and holiday/night meal allowances depending on role level."
+        ),
+    },
+    {
+        "question": "Raise IT support ticket for Outlook access",
+        "answer": (
+            "To raise an IT support ticket for Outlook access, visit the IT request portal "
+            "(insert the correct link where indicated), click 'New Request' on the top bar, "
+            "complete the form with required details and mention the issue (e.g., 'Not receiving "
+            "emails in Outlook / Need access enabled'), then submit. The IT Support Team will "
+            "review the ticket and follow up with next steps."
+            "\n\nPortal link: <https://helpdesk.hayleysadvantis.com/app/itdesk/HomePage.do>"
+        ),
+    },
+    {
+        "question": "GMC members overview",
+        "answer": (
+            "The Group Management Committee (GMC) comprises Advantis senior leadership in "
+            "charge of strategic direction. Current leadership includes:\n"
+            "Managing Director: Ruwan Waidyaratne\n"
+            "Deputy Managing Directors: Asanka Ratnayake, Shano Sabar\n"
+            "Board Directors: Janitha Jayanetti, Virendra Perera, Binupa Liyanage, "
+            "Vishwanath Daluwatte\n"
+            "GMC Members: Gerard Victoria, Shamindra Wickremesooriya, Chintaka De Zoysa, "
+            "Sheran Abeysundere, Sagara Peiris, Chamila Bandara, Arosha Fernando, "
+            "Tharanga Perera."
+        ),
+    },
+]
+
+predefined_cycle = cycle(PREDEFINED_ANSWERS)
 
 @app.route('/upload', methods=['POST'])
 def upload_document():
@@ -156,6 +206,14 @@ def text_to_speech():
         return Response(audio_bytes, mimetype='audio/mpeg')
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/predefined-answer', methods=['GET'])
+def get_predefined_answer():
+    """Return one of three hardcoded answers in round-robin order."""
+    # Use next() so repeated calls cycle through the predefined list
+    answer_payload = next(predefined_cycle)
+    # Return a shallow copy to avoid exposing iterator internals
+    return jsonify(dict(answer_payload)), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
