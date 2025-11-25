@@ -27,45 +27,46 @@ PREDEFINED_ANSWERS = [
     {
         "question": "Executive benefits overview",
         "answer": (
-            "Welcome to Advantis! As an Executive employee you receive medical coverage "
-            "including outpatient reimbursement, hospitalization/surgical insurance, "
-            "critical illness cover, mobile ambulance support (Healthscan), and spectacle "
-            "reimbursement. Life & accident cover includes Group Term Life Assurance and "
-            "Personal Accident Insurance. Statutory benefits: Private Provident Fund, "
-            "Employees’ Trust Fund, and Gratuity after 5 years. Loan facilities include "
-            "personal, academic/professional development, motorcycle, and PPF-based housing/"
-            "education loans. Recreational perks include annual company trips, holiday "
-            "bungalows, hotel discounts, and subsidized gym memberships. HGRC membership "
-            "covers funeral fund, wedding/newborn gifts, educational rewards, blood donation "
-            "support, and events. Long service awards recognize tenure milestones. "
-            "Professional development: examination gifts, support for relevant memberships, "
-            "and career assistance. Other perks include company wedding gifts, club "
-            "membership eligibility, and holiday/night meal allowances depending on role level."
+            "**Executive Onboarding Snapshot**\n"
+            "\n"
+            "Welcome to Advantis! Your Executive benefits include:\n"
+            "\n"
+            "- **Medical**: Outpatient reimbursement, hospitalization & surgical cover, critical illness protection, Healthscan mobile ambulance, spectacle reimbursement.\n"
+            "- **Life & Accident**: Group Term Life Assurance plus Personal Accident Insurance.\n"
+            "- **Statutory**: Private Provident Fund, Employees’ Trust Fund, and gratuity after 5 years.\n"
+            "- **Loans**: Personal, academic/professional, motorcycle, and PPF-backed housing/education facilities.\n"
+            "- **Recreation**: Annual company trips, holiday bungalows, hotel discounts, subsidized gym memberships.\n"
+            "- **HGRC Membership**: Funeral fund, wedding & newborn gifts, educational achievement rewards, blood donation support, and community events.\n"
+            "- **Recognition & Growth**: Long-service awards, examination gifts, and support for relevant professional memberships.\n"
+            "- **Other Perks**: Company wedding gift, club membership eligibility, holiday/night meal allowances (role dependent).\n"
+            "\n"
+            "Reach out to HR anytime you need help activating a benefit."
         ),
     },
     {
         "question": "Raise IT support ticket for Outlook access",
         "answer": (
-            "To raise an IT support ticket for Outlook access, visit the IT request portal "
-            "(insert the correct link where indicated), click 'New Request' on the top bar, "
-            "complete the form with required details and mention the issue (e.g., 'Not receiving "
-            "emails in Outlook / Need access enabled'), then submit. The IT Support Team will "
-            "review the ticket and follow up with next steps."
-            "\n\nPortal link: <https://helpdesk.hayleysadvantis.com/app/itdesk/HomePage.do>"
+            "**Need Outlook Access?**\n"
+            "\n"
+            "1. Open the IT request portal: <https://helpdesk.hayleysadvantis.com/app/itdesk/HomePage.do>.\n"
+            "2. Click **New Request** in the top bar.\n"
+            "3. Complete the form and note the issue as “Not receiving emails in Outlook / Need access enabled”.\n"
+            "4. Submit the ticket so the IT Support Team can review and respond.\n"
+            "\n"
+            "Tip: attach screenshots or error messages to speed up troubleshooting."
         ),
     },
     {
         "question": "GMC members overview",
         "answer": (
-            "The Group Management Committee (GMC) comprises Advantis senior leadership in "
-            "charge of strategic direction. Current leadership includes:\n"
-            "Managing Director: Ruwan Waidyaratne\n"
-            "Deputy Managing Directors: Asanka Ratnayake, Shano Sabar\n"
-            "Board Directors: Janitha Jayanetti, Virendra Perera, Binupa Liyanage, "
-            "Vishwanath Daluwatte\n"
-            "GMC Members: Gerard Victoria, Shamindra Wickremesooriya, Chintaka De Zoysa, "
-            "Sheran Abeysundere, Sagara Peiris, Chamila Bandara, Arosha Fernando, "
-            "Tharanga Perera."
+            "**Group Management Committee (GMC) Snapshot**\n"
+            "\n"
+            "- **Managing Director**: Ruwan Waidyaratne\n"
+            "- **Deputy Managing Directors**: Asanka Ratnayake, Shano Sabar\n"
+            "- **Board Directors**: Janitha Jayanetti, Virendra Perera, Binupa Liyanage, Vishwanath Daluwatte\n"
+            "- **GMC Members**: Gerard Victoria, Shamindra Wickremesooriya, Chintaka De Zoysa, Sheran Abeysundere, Sagara Peiris, Chamila Bandara, Arosha Fernando, Tharanga Perera\n"
+            "\n"
+            "These leaders steer Advantis strategy, investments, and cross-division alignment."
         ),
     },
 ]
