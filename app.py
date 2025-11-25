@@ -27,8 +27,6 @@ PREDEFINED_ANSWERS = [
     {
         "question": "Executive benefits overview",
         "answer": (
-            "**Executive Onboarding Snapshot**\n"
-            "\n"
             "Welcome to Advantis! Your Executive benefits include:\n"
             "\n"
             "- **Medical**: Outpatient reimbursement, hospitalization & surgical cover, critical illness protection, Healthscan mobile ambulance, spectacle reimbursement.\n"
